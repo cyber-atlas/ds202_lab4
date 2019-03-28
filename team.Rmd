@@ -57,7 +57,12 @@ plot2 <- ggplot(defCleanFilter, aes(x=`West Virginia`, y=`Kansas State`, na.rm =
   geom_jitter(width=0.1, height=0.1) + xlim(0,10) + ylim(0,10) + geom_abline(slope=1, intercept=0)
 plot2
 ```
-<br />A greater number of points lie above the abline (x=y), indicating that the defense played better in their game against Kansas State than against West Virginia.
+<br />
+
+
+A greater number of points lie above the abline (x=y), indicating that the defense played better in their game against Kansas State than against West Virginia becauseo of the increase increase in the amount of tackles.
+
+
 
 ```{r}
 bioClean <- bioClean %>% separate(Hometown, into=c("City", "State"), sep=", ")
@@ -81,7 +86,11 @@ offReceive
 ggplot(offBio, aes(x = reorder(Name, Weight, FUN = mean), y=Receiving_YDS)) + geom_boxplot() + theme(axis.text.x=element_text(angle=90,hjust=1))
 ggplot(offBio, aes(x=Weight, y=Receiving_YDS)) + geom_point()
 ```
-<br />No obvious relationship exists between weight and receiving yards.
+<br />
+
+No obvious relationship exists between weight and receiving yards.
+Heavier player did seem to recieve more in short distances but this did not hold up for long distances. 
+
 
 ```{r}
 defBio <- inner_join(defClean, bioClean, by = "Name")
@@ -91,5 +100,7 @@ defBio[, "Count"] <- lapply(defBio[, "Count"], as.numeric)
 tacklesByPosition <- group_by(defBio, Position) %>% filter(Statistic == "Tackles_Solo") %>% summarise(tackles = sum(Count))
 tacklesByPosition
 ```
-Q: Which position had the most solo tackles?<br />
-A: The defensive back position had the most solo tackles.
+
+Q: Which position had the most solo tackles?
+<br />
+A: The defensive back position had the most solo tackles. This could possibly be due to their positionign on the line which gives them the ability to see more of what is going on. 

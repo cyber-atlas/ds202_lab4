@@ -1,0 +1,49 @@
+---
+title: "individual1"
+author: "cyber-atlas"
+date: "March 28, 2019"
+output: html_document
+---
+```{r}
+library("dplyr")
+library("tidyr")
+library("tidyverse")
+library("ggplot2")
+library("readxl")
+```
+
+```{r}
+#load data
+defense <- read_excel('cyclonesFootball2018.xlsx', sheet='Defensive')
+offense <- read_excel('cyclonesFootball2018.xlsx', sheet='Offensive')
+biography <- read_excel('cyclonesFootball2018.xlsx', sheet='Biography')
+```
+
+1. 
+```{r}
+#Cleaning data
+
+defClean <- defense
+offClean <- offense
+bioClean <- biography
+
+
+
+defClean[, "Name"] <- lapply(defClean[, "Name"], as.factor)
+defClean[, "Opponent_Opponent"] <- lapply(defClean[, "Opponent_Opponent"], as.factor)
+offClean[, "Name"] <- lapply(offClean[, "Name"], as.factor)
+offClean[, "Opponent_Opponent"] <- lapply(offClean[, "Opponent_Opponent"], as.factor)
+bioClean[, "Name"] <- lapply(bioClean[, "Name"], as.factor)
+
+defClean <- mutate_if(defClean, is.character, as.numeric)
+offClean <- mutate_if(offClean, is.character, as.numeric)
+bioClean[, "Weight"] <- lapply(bioClean[, "Weight"], as.numeric)
+
+bioClean <- bioClean %>% separate(Height, into=c("Feet", "Inch"), sep="-") %>% mutate(Height = as.numeric(Feet)*12+as.numeric(Inch))
+bioClean <- bioClean[, c(1, 2, 9, 5, 6, 7, 8)]
+
+str(defClean)
+str(offClean)
+str(bioClean)
+
+```
