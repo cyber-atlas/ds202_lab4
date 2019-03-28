@@ -47,3 +47,58 @@ str(offClean)
 str(bioClean)
 
 ```
+Tidy
+
+1
+```{r}
+defGather <- gather(defClean,Statistic,Value,-c(1,2))
+head(defGather)
+
+```
+
+
+
+2
+```{r}
+ggplot(defGather, aes(x = Opponent_Opponent, y=Value)) + geom_histogram(stat="identity") + 
+  facet_wrap(~Statistic) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))+ 
+  ylab("Count ")+ 
+  xlab("Opponent") 
+  
+```
+
+
+
+It looks like all turnover stats are pretty rare
+
+
+
+
+```{r}
+perfdf <- defClean %>% 
+  filter(Opponent_Opponent == "West Virginia" | Opponent_Opponent == "Kansas State") %>% 
+  select(Name, Opponent_Opponent, Tackles_Solo) %>%
+  spread(Opponent_Opponent, Tackles_Solo) %>% 
+mutate_all(funs(replace(., is.na(.), 0)))
+perfdf[is.na(perfdf)] <- 0
+perfdf
+```
+3
+
+```{r}
+bioClean<- separate(bioClean, "Hometown", c('City', 'State'), sep = ", ")
+states <- bioClean %>% 
+  group_by(State) %>% 
+  summarise(Num_Players = n())%>%
+  arrange(Num_Players, desc(Num_Players))
+#states <- states %>%
+tail(states,1)
+
+```
+
+Most of the players are from Iowa
+
+```{r}
+states
+```

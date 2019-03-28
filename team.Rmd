@@ -53,8 +53,12 @@ plot1
 ```{r}
 defCleanFilter <- defClean %>% filter(Opponent_Opponent %in% c("West Virginia", "Kansas State")) %>% filter(Statistic == "Tackles_Solo") %>% spread(key = Statistic, value = Count) %>% spread(key = Opponent_Opponent, value = Tackles_Solo)
 #defCleanFilter[is.na(defCleanFilter)] <- 0 #replace null values with zero
-plot2 <- ggplot(defCleanFilter, aes(x=`West Virginia`, y=`Kansas State`, na.rm = TRUE)) + 
-  geom_jitter(width=0.1, height=0.1) + xlim(0,10) + ylim(0,10) + geom_abline(slope=1, intercept=0)
+plot2 <-
+  ggplot(defCleanFilter,
+  aes(x = `West Virginia`, y = `Kansas State`, na.rm = TRUE)) +
+  geom_jitter(width = 0.1, height = 0.1) + xlim(0, 10) + ylim(0, 10) + geom_abline(slope =
+  1, intercept = 0)
+
 plot2
 ```
 <br />
@@ -81,10 +85,19 @@ offHome
 ```
 
 ```{r}
-offReceive <- group_by(offBio, Name) %>% summarise(R_YDS_mean = mean(Receiving_YDS), R_YDS_std = sd(Receiving_YDS), Weight = mean(Weight))
+offReceive <-
+  group_by(offBio, Name) %>% summarise(
+  R_YDS_mean = mean(Receiving_YDS),
+  R_YDS_std = sd(Receiving_YDS),
+  Weight = mean(Weight)
+  )
+
 offReceive
-ggplot(offBio, aes(x = reorder(Name, Weight, FUN = mean), y=Receiving_YDS)) + geom_boxplot() + theme(axis.text.x=element_text(angle=90,hjust=1))
-ggplot(offBio, aes(x=Weight, y=Receiving_YDS)) + geom_point()
+
+ggplot(offBio, aes(x = reorder(Name, Weight, FUN = mean), y = Receiving_YDS)) + geom_boxplot() + theme(axis.text.x =
+  element_text(angle = 90, hjust = 1))+ xlab("Name In Order of Weight")+ylab("Receiving Yards")+ ggtitle("Receiving Yards By Player in Order of Weight")
+
+ggplot(offBio, aes(x = Weight, y = Receiving_YDS)) + geom_point()+ ggtitle("Receiving Yards by Weight")
 ```
 <br />
 
